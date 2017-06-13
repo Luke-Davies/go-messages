@@ -22,9 +22,26 @@ func GetMessages(w http.ResponseWriter, r *http.Request) {
 
 // CreateMessage adds a new message
 func CreateMessage(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	// check if valid supported content type
+	set := map[string]bool{"text/plain": true, "application/x-www-form-urlencoded": true}
+	if _, v := set[r.Header.Get("Content-Type")]; !v {
+		w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
+		w.WriteHeader(400)
+		fmt.Fprintln(w, "Content-Type type not supported.")
+		return
+	}
 	var body, _ = ioutil.ReadAll(r.Body)
 	messageText := string(body)
+
+	// check a message is passed
+	if len(messageText) == 0 {
+		w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
+		w.WriteHeader(400)
+		fmt.Fprintln(w, "No data provided.")
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	messageID := nextMsgID
 	nextMsgID++
 	message := Message{ID: messageID, Text: messageText}
