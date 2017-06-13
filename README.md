@@ -44,4 +44,4 @@ $ curl -X DELETE localhost:3000/messages
 
 ---
 ### Node.js Version
-Want to see the same thing implemented in Node.js? Click [here](https://github.com/Luke-Davies/messages-express)
+Want to see the same thing implemented in Node.js? [Click here](https://github.com/Luke-Davies/messages-express)
