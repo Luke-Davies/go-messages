@@ -21,5 +21,9 @@ func main() {
 
 	handler := handlers.LoggingHandler(os.Stdout, router)
 
-	log.Fatal(http.ListenAndServe(":3000", handler))
+	port := ":3000"
+	if v := os.Getenv("PORT"); v != "" {
+		port = ":" + v
+	}
+	log.Fatal(http.ListenAndServe(port, handler))
 }
